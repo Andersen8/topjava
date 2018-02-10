@@ -33,6 +33,26 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // TODO return filtered list with correctly exceeded field
-        return null;
+        int sum=0;
+        boolean secces;
+        List<UserMeal> list = new ArrayList();
+        List<UserMealWithExceed> ulist = new ArrayList<>();
+        for(UserMeal um: mealList){
+            int hour = um.getDateTime().getHour();
+            if(hour >= startTime.getHour() && hour <= endTime.getHour()){
+                sum+=um.getCalories();
+                list.add(um);
+            }
+        }
+        if(sum <= caloriesPerDay) secces = true; else secces = false;
+        for(UserMeal uml: list){
+            ulist.add(new UserMealWithExceed(uml.getDateTime(),
+                    uml.getDescription(),
+                    uml.getCalories(),
+                    secces));
+        }
+
+
+        return ulist;
     }
 }
